@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import br.edu.ifba.frontend.model.GaleriaModel;
 import br.edu.ifba.frontend.model.GincanaModel;
+import br.edu.ifba.frontend.model.StatusModel;
 import br.edu.ifba.frontend.service.GaleriaService;
 import br.edu.ifba.frontend.service.GincanaService;
 import br.edu.ifba.frontend.service.StatusService;
@@ -67,74 +68,33 @@ public class GaleriaController {
 		return "redirect:/galeria/";
 	}
 	
-	
-	
 	@GetMapping("/editar_form/{id}")
 	public String editar_form(@PathVariable("id") Integer id, Model model) {
 		
 		List<GincanaModel> list = this.gincanaService.getGincanas();
 		
-		GaleriaModel gm = this.galeriaService.getGaleria(id);
-		model.addAttribute("id_Galeria", gm.getId_Galeria());
-		model.addAttribute("nome_Galeria", gm.getNome_Galeria());
-		model.addAttribute("descricao_Galeria", gm.getDescricao_Galeria());
-		model.addAttribute("id_Gincana", gm.getGincana().getId_Gincana());
-		model.addAttribute("gincanas", list);
-
-		
+		GaleriaModel tm = this.galeriaService.getGaleria(id);
+		model.addAttribute("id_Galeria", tm.getId_Galeria());
+		model.addAttribute("nome_Galeria", tm.getNome_Galeria());
+		model.addAttribute("descricao_Galeria", tm.getDescricao_Galeria());
+		model.addAttribute("id_Gincana", tm.getGincana().getId_Gincana());
+		model.addAttribute("list_gincana", list);
 		model.addAttribute("readonly", true);
 		return "galeria/editar_form";
 	}
 	
 	@PostMapping("/editar")
 	public String editar(@ModelAttribute GaleriaTelaModel galeriaTelaModel, Model model) {
-		GincanaModel gm = this.gincanaService.getGincana(galeriaTelaModel.getGincana());
 		
+		GincanaModel gim = this.gincanaService.getGincana(galeriaTelaModel.getGincana());
 		
 		GaleriaModel tm = this.galeriaService.getGaleria(galeriaTelaModel.getId_Galeria());
 		tm.setNome_Galeria(galeriaTelaModel.getNome_Galeria());
 		tm.setDescricao_Galeria(galeriaTelaModel.getDescricao_Galeria());
-		tm.setGincana(gm);
+		tm.setGincana(gim);
 		galeriaService.update(tm);
 		return "redirect:/galeria/";
 	}
-	
-	@GetMapping("/indexdashboard")
-	public String desenvolvedores() {
-		return "imagem/indexdashboard";
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
